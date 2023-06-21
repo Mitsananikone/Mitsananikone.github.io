@@ -1,0 +1,241 @@
+.testi_section {
+    margin-top: 20vh;
+    background-color: #111827;
+    color: #9CA3AF;
+    height: max-content;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.testi_clients {
+    background-color: #1F2937;
+    align-items: center;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    padding: 2rem;
+    width: max-content;
+    max-width: 100%;
+    height: auto;
+    z-index: 999;
+    overflow: visible;
+}
+
+.testi_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: max-content;
+    padding-bottom: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 400px;
+}
+
+
+
+.testi_iconContainer{
+    display: inline-block;
+    margin: auto 0 1rem;
+    width: 2.5rem;
+    color: white;
+}
+
+.testi_clientsIcon, .testi_image {
+    margin-bottom: 0.5rem;
+    width: 2rem;
+}
+
+.testi_clientsIcon>p {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    font-size: smaller;
+    height: 100%;
+    justify-content: center;
+    line-height: 1.625;
+    margin-bottom: 1.5rem;
+    padding: 1em;
+    width: 60%;
+    word-wrap: break-word;
+}
+
+.testi_gallery {
+    margin-top: 800px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0.5rem;
+    overflow: visible;
+    height: 1200px;
+    width: 100%;
+}
+
+.testi_portrait {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.testi_image {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.testi_nameContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.testi_name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.testi_company {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+
+
+.testi_container>h2 {
+    color: white;
+    display: inline;
+    font-size: 1.875rem;
+    font-weight: 500;
+    line-height: 2.25rem;
+    margin-bottom: 3rem;
+}
+
+.testi_nameContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 1rem;
+}
+
+@media screen and (max-width: 320px) {
+    .testi_container {
+        /* border: 1px solid red; */
+
+        
+    }
+    .testi_gallery{
+        margin-top: -100px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 200px;
+        /* border: 4px solid blue; */
+
+    }
+    .testi_clients {
+       
+     width:80%;
+    }
+}
+
+/* Mobile devices */
+@media screen and (min-width: 321px) and (max-width: 480px) {
+    .testi_clients {
+        max-width: 80%;
+        min-width: 300px;
+    }
+    .testi_gallery {
+        height: fit-content;
+    }
+}
+
+/* iPads, Tablets */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .testi_clients {
+        max-width: 80%;
+        min-width: 300px;
+    }
+
+    .testi_container{
+     padding-top: 0;
+    }
+
+    .testi_clients>p {
+        font-size: small;
+    }
+
+    .testi_gallery {
+        height: fit-content;
+    }
+}
+
+/* Small screens, laptops */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .testi_container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .testi_container{
+        padding-top: 0;
+       }
+
+    .testi_gallery {
+        height: 100%;
+    }
+
+    .testi_clients {
+        max-width: 40%;
+        height: auto;
+    }
+}
+
+/* Desktops, large screens */
+@media screen and (min-width: 1025px) and (max-width: 1200px) {
+    .testi_clients {
+        max-width: 40%;
+        height: auto;
+    }
+    .testi_gallery {
+        width: 100%;
+        height:fit-content;
+    }
+    .testi_container {
+        padding-top: 0;
+    }
+    #text_section {
+        padding-top: 0;
+    }
+}
+
+/* Extra large screens, TV */
+@media screen and (min-width: 1201px) {
+    .testi_clients {
+        max-width: 40%;
+        height: auto;
+    }
+    .testi_gallery {
+        width: 100%;
+        height:fit-content;
+    }
+    .testi_container {
+        margin-top: 200px;
+        padding-top: 0;
+    }
+    #text_section {
+        padding-top: 0;
+    }
+
+}
