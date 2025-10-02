@@ -1,124 +1,150 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Parallelogram from "@/components/parallelogram/parallelogram";
-import "@/styles/globals.css";
+import styles from "./homepage.module.css";
+
+// Custom hook to get screen width
+function useScreenWidth() {
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setScreenWidth(window.innerWidth);
+      const handleResize = () => setScreenWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  return screenWidth;
+}
 
 function HomePage() {
+  const [fadeInImages, setFadeInImages] = useState(false);
+  const screenWidth = useScreenWidth();
+
+  useEffect(() => {
+    setTimeout(() => setFadeInImages(true), 1000);
+  }, []);
+
+  // Dynamic styles that need JavaScript values
+  const dynamicStyles = {
+    resizedImage: {
+      opacity: fadeInImages ? 1 : 0,
+    },
+    title: {
+    fontSize: screenWidth < 480 ? "1.8rem" :  // Extra small devices
+             screenWidth < 768 ? "1.7rem" :     // Small devices
+             screenWidth < 1024 ? "1.6rem" : // Medium devices
+             "2rem",                       // Large devices (1024px and up)
+    lineHeight: screenWidth < 480 ? "1.2" :  // Responsive line height
+               screenWidth < 768 ? "1.3" :
+               "1.4",
+    padding: screenWidth < 480 ? "0.5rem" :  // Responsive padding
+             screenWidth < 768 ? "0.8rem" :
+             "1rem"
+  },
+  subtitle: {
+    fontSize: screenWidth < 480 ? "1.5rem" :
+              screenWidth < 768 ? "1.2rem" :
+              screenWidth < 1024 ? "1.1rem" :
+              "1rem"
+  }
+  };
+
   return (
-    <flexcenter >
-    <div className="centerContainer" >
-      {/* First Parallelogram */}
-      <Parallelogram
-        width="550px"
-        height="500px"
-        color="var(--primary-color)"
-        top="0vh"
-        left="0vw"
-      >
-        {/* This div will hold the text and counter the skew applied to the parallelogram */}
-        <div
-          style={{
-            position: "relative", // Keep the content positioned in the default flow
-            zIndex: 1, // Ensure it's on top of the parallelogram
-            textAlign: "left", // Align the text as desired
-            transform: "skew(20deg)", // Counteract the skew of the parallelogram
-          }}
-        >
-          <h1
-            style={{
-              color: "var(--secondary-color)",
-              fontSize: "2.6rem",
-              fontStyle: "normal",
-            }}
+    <div className={styles.homeContainer}>
+      <div className={styles.contentContainer}>
+        {/* First Parallelogram - slides in from left */}
+        <div className={styles.animateLeft}>
+          <Parallelogram
+            width={
+              screenWidth < 480 ? "75vw" : // New breakpoint for very small screens
+            screenWidth < 768 ? "70vw" : 
+            screenWidth < 1024 ? "60vw" : 
+            "40vw" 
+            }
+            height={screenWidth < 768 ? "65vh" : "70vh"}
+            color="var(--primary-color)"
+            top="8vh"
+            left={ 
+              screenWidth < 480 ? "9vw" : // New breakpoint for very small screens
+              screenWidth < 768 ? "8vw" : 
+              screenWidth < 1024 ? "0vw" : 
+              "-15vw"
+            }
+            zIndex="1"
+            scale="1"
           >
-            LIVING
-          </h1>
-          <h1
-            style={{
-              color: "var(--secondary-color)",
-              fontSize: "2.6rem",
-              fontStyle: "normal",
-            }}
-          >
-            OAKS
-          </h1>
-          <h1
-            style={{
-              color: "var(--secondary-color)",
-              fontSize: "2.6rem",
-              fontStyle: "normal",
-            }}
-          >
-            CHURCH
-          </h1>
-
-          <h6
-            style={{
-              color: "var(--foreground-color)",
-              fontSize: "0.7rem",
-              fontStyle: "normal",
-            }}
-          >
-            <i>
-              ...that they may be called oaks of righteousness, the planting of
-              the Lord, that he may be glorified. <br /> - Isaiah 61:3
-            </i>
-          </h6>
-
-          <div
-            style={{
-              width: "100%", // Full width of the parent container
-              height: "2px", // Line height
-              background:
-                "linear-gradient(to right, white 33%, rgba(255, 255, 255, 0.5) 33%, rgba(255, 255, 255, 0.5) 100%)",
-              marginTop: "40px", // Space between text and the line
-            }}
-          ></div>
-
-          <h1
-            style={{
-              color: "var(--secondary-color)",
-              fontSize: "0.8rem",
-              fontStyle: "normal",
-              marginTop: "40px",
-            }}
-          >
-            Leading REAL people to find <br/> REAL hope in Jesus.
-          </h1>
+            <div className={styles.parallelogramContent}>
+              <h1 className={styles.title} style={dynamicStyles.title}>
+                &nbsp; LIVING  
+              
+                &nbsp; OAKS  
+             
+                &nbsp; CHURCH  
+    
+              </h1>
+              <h5 style={{ color: "white" }}>
+                
+                  ...that they may be called oaks of righteousness, the planting
+                  of the Lord, that he may be glorified.
+                  <br /> - Isaiah 61:3
+               
+              </h5>
+              <div className={styles.separationLine}></div>
+              <h4 className={styles.subtitle}>
+        
+                <br/>
+                Leading REAL people <br /> with REAL hurts to find REAL hope in
+                Jesus.
+              </h4>
+            </div>
+          </Parallelogram>
         </div>
-      </Parallelogram>
 
-      {/* Second Parallelogram with PNG background */}
-      <Parallelogram
-        width="400px"
-        height="450px"
-        top="10vh"  // Position it a bit lower
-        left="0vw"  // Position it to the right of the first parallelogram
-        color="var(--primary-color)"
-        backImage="url('/images/LOCoakHomepage.jpg')"
-      >
-        {/* This div will hold content */}
-        <div
-          style={{
-            position: "relative", // Keep the content positioned in the default flow
-            zIndex: 1, // Ensure it's on top of the parallelogram
-            textAlign: "left", // Align the text as desired
-            transform: "skew(20deg)", // Counteract the skew of the parallelogram
-            height: "100%", // Ensure div takes full height of parallelogram
-            width: "100%", // Ensure it takes full width
-            // backgroundImage: "url('/images/LOCoakHomepage.jpg')", // Set the correct background image path
-            backgroundSize: "cover", // Make image cover the entire container (larger than parallelogram)
-            backgroundPosition: "center", // Center the image
-            backgroundRepeat: "no-repeat", // Prevent image from repeating
-            clipPath: "polygon(0 0, 100% 0%, 100% 100%, 0 100%, 15% 20%, 85% 20%)", // Clip to a parallelogram shape
-            overflow: "hidden", // Hide any overflowing parts of the image
-          }}
-        >
-          
+        {/* Second Parallelogram - slides in from right */}
+        <div className={styles.animateRight}>
+          <Parallelogram
+           width={
+            screenWidth < 480 ? "50vw" : // New breakpoint for very small screens
+            screenWidth < 768 ? "40vw" : 
+            screenWidth < 1024 ? "30vw" : 
+            "20vw"
+          }
+      
+            height= "45vh"
+            top="8vh"
+            left={
+              screenWidth < 480 ? "-1vw" : // New breakpoint for very small screens
+              screenWidth < 768 ? "5vw" : 
+              screenWidth < 1024 ? "-5vw" : 
+              "-20vw"
+            }
+            backImage="url('/images/LOCoakHomepage.jpg')"
+            zIndex="2"
+            scale="1"
+          >
+            <div className={styles.parallelogramImage}></div>
+          </Parallelogram>
         </div>
-      </Parallelogram>
+      </div>
 
+<div>
+      <div className={styles.imageGrid}>
+        {["cred_heights", "cred_GCBA", "cred_SBTC", "cred_NAMB"].map(
+          (img, index) => (
+            <img
+              key={index}
+              src={`/images/${img}.png`}
+              alt={img}
+              className={styles.resizedImage}
+              style={{ ...dynamicStyles.resizedImage }}
+            />
+          )
+        )}
+      </div>
     </div>
-    </flexcenter>
+    </div>
   );
 }
 

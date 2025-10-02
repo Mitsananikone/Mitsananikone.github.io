@@ -1,52 +1,119 @@
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import DownloadBanner from '@/components/DownloadBanner/DownloadBanner';
 import HomePage from "@/pages/home/homepage";
-// import LandingPopup from '@/components/landingPopup/landingPopup';
-// import ContactForm from '@/components/contactForm/contactForm';
-
-import React from "react";
-import "../styles/globals.css";
 import MeetThePerrins from "./meetPerrins/meetPerrins";
 import Mission from "./mission/mission";
-import Plan from "./plan/plan";
-import Resources from "./resources/resources";
-import Join from "./join/join";
+import Services from "./services/services";
+import Location from "./location/location"; // Import the new component
+import About from "./about/about";
+import Donations from "./donations/donations";
 import Contact from "./contact/contact";
+import Footer from "./footer/footer";
+import ScreenWidthDisplay from "@/components/screenWidthDisplay/ScreenWidthDisplay";
+
+const styles = {
+  centerContainer: {
+    marginTop: "4vh",
+    display: "flex",
+    flexDirection: "column", // Stack children vertically
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "auto", // Allow the container to grow based on content
+    overflow: "auto", // Enable vertical scrolling
+    overflowX: "hidden", // Disable horizontal scrolling
+    zIndex: 1,
+  },
+  background: {
+    height: "auto", // Auto height for mobile
+    width: "100%", // Full width on mobile
+    padding: "0px", // Reduced padding for mobile
+  },
+  section: {
+    scrollMarginTop: "10vh", // Add 10vh margin to the top of each section
+  },
+};
+
 export default function Home() {
+  const router = useRouter(); // Initialize the router
+
+  // Scroll to the services section if the query parameter is present
+  useEffect(() => {
+    if (router.query.scrollTo === "services") {
+      const servicesSection = document.getElementById("services");
+      if (servicesSection) {
+        servicesSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [router.query]); // Run this effect when the query parameter changes
   return (
     <>
-      <div className="centerContainer">
-        {/* <div className="fullScreen"> */}
-         
-            <div className="sections">
-
-            <div className="background">
-              <section id="home">
-                <HomePage />
-              </section>
-              </div>
-
-              <div className="background">
-              <section id="meetPerrins">
-                <MeetThePerrins />
-              </section>
-             
-              <section id="mission">
-                <Mission />
-              </section>
-              <section id="plan">
-                <Plan />
-              </section>
-              {/* <section id="resources">
-                <Resources />
-              </section>
-              <section id="join">
-                <Join />
-              </section>
-              <section id="contact">
-                <Contact />
-              </section> */}
-            </div>
+     <DownloadBanner />
+      <div className="responsive-wrapper">
+        <div style={styles.centerContainer}>
+          {/* HomePage Section */}
+          <div style={styles.background}>
+            <section id="home" style={styles.section}>
+              <HomePage />
+            </section>
           </div>
-</div>
+
+          {/* MeetThePerrins Section */}
+          <div style={styles.background}>
+            <section id="meetPerrins" style={styles.section}>
+              <MeetThePerrins />
+            </section>
+          </div>
+
+          {/* Mission Section */}
+          <div style={styles.background}>
+            <section id="mission" style={styles.section}>
+              <Mission />
+            </section>
+          </div>
+
+          {/* Services Section */}
+          <div style={styles.background}>
+            <section id="services" style={styles.section}>
+              <Services />
+            </section>
+          </div>
+
+          {/* Location Section */}
+          <div style={styles.background}>
+            <section id="location" style={styles.section}>
+              <Location />
+            </section>
+          </div>
+
+          {/* About Section */}
+          <div style={styles.background}>
+            <section id="about" style={styles.section}>
+              <About />
+            </section>
+          </div>
+
+          {/* Donation Section */}
+          <div style={styles.background}>
+            <section id="donations" style={styles.section}>
+              <Donations />
+            </section>
+          </div>
+
+          {/* Contact Section */}
+          <div style={styles.background}>
+            <section id="contact" style={styles.section}>
+              <Contact />
+            </section>
+          </div>
+        </div>
+        </div>
+        <div style={styles.background}>
+          <Footer />
+        </div>
+
+      
     </>
   );
 }
