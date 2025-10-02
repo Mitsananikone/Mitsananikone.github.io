@@ -1,52 +1,71 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect } from "react";
+import smoothscroll from "smoothscroll-polyfill";
 import styles from "./nav.module.css";
 
 const Navbar = () => {
-  const [showNav, setShowNav] = useState(true);
-  const [lastScrollPos, setLastScrollPos] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-  const idleTimeout = useRef(null);
+  const [navbarVisible, setNavbarVisible] = useState(false);
+  const [timer, setTimer] = useState(null);
+  const [isClient, setIsClient] = useState(false);
 
+  // Initialize smoothscroll polyfill and set isClient to true
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      setShowNav(currentScrollPos <= lastScrollPos); // Show navbar when scrolling up
-      setLastScrollPos(currentScrollPos);
-    };
+    smoothscroll.polyfill(); // Initialize smoothscroll polyfill
+    setIsClient(true); // Ensure this runs only on the client side
+  }, []);
 
-    const handleMouseMove = () => {
-      setShowNav(true);
-      if (idleTimeout.current) {
-        clearTimeout(idleTimeout.current);
-      }
-      idleTimeout.current = setTimeout(() => setShowNav(false), 8000000);
-    };
+  // Show navbar on touch and hide it after 10 seconds
+  const showNavbar = () => {
+    setNavbarVisible(true);
+    clearTimeout(timer);
+    const newTimer = setTimeout(() => {
+      setNavbarVisible(false);
+    }, 10000);
+    setTimer(newTimer);
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("mousemove", handleMouseMove);
+  // Add touch event listener to show navbar
+  useEffect(() => {
+    if (isClient) {
+      const handleTouch = () => {
+        showNavbar();
+      };
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("mousemove", handleMouseMove);
-      if (idleTimeout.current) {
-        clearTimeout(idleTimeout.current);
-      }
-    };
-  }, [lastScrollPos]);
-
-  const handleNavClick = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      window.addEventListener("touchstart", handleTouch);
+      return () => {
+        window.removeEventListener("touchstart", handleTouch);
+        clearTimeout(timer);
+      };
     }
-    setMenuOpen(false);
+  }, [timer, isClient]);
+
+  // Handle navigation link clicks
+  const handleNavClick = (sectionId) => {
+    if (isClient) {
+      console.log(`Attempting to scroll to section: ${sectionId}`);
+      const section = document.getElementById(sectionId);
+      if (section) {
+        console.log(`Section found: ${sectionId}`);
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start", // Aligns the section to the top of the viewport
+        });
+      } else {
+        console.error(`Section not found: ${sectionId}`);
+      }
+    }
+    setMenuOpen(false); // Close the mobile menu
+    showNavbar(); // Show the navbar after clicking a link
   };
 
   return (
-    <nav className={`${styles.navbar} ${showNav ? styles.show : styles.hide}`}>
+    <nav className={`${styles.navbar} ${navbarVisible ? styles.visible : styles.hidden}`}>
+      {/* Logo */}
       <div className={styles.logo} onClick={() => handleNavClick("home")}>
         <img src="./images/LOCnavLogo.png" alt="Logo" />
       </div>
+
+      {/* Hamburger Menu */}
       <div
         className={styles.hamburger}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -56,22 +75,30 @@ const Navbar = () => {
         <div className={styles.line}></div>
         <div className={styles.line}></div>
       </div>
-      <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
-  {[
-    { label: "Home", id: "home" },
-    { label: "Meet the Perrins", id: "meetPerrins" },
-    { label: "Our Mission", id: "mission" },
-    { label: "The Plan", id: "plan" },
-    { label: "Resources", id: "resources" },
-    { label: "Join Us", id: "join" },
-    { label: "Contact Us", id: "contact" },
-  ].map(({ label, id }, index) => (
-    <li key={index} onClick={() => handleNavClick(id)}>
-      {label}
-    </li>
-  ))}
-</ul>
 
+      {/* Navigation Links */}
+      <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
+        {[
+          { label: "Home", id: "home" },
+          { label: "Meet the Perrins", id: "meetPerrins" },
+          { label: "Our Mission", id: "mission" },
+          { label: "Our Services", id: "services" },
+          { label: "Location", id: "location" },
+          { label: "Name and Logo Story", id: "about" },
+          { label: "Tithe", id: "donations" }, // Added Donations here
+          { label: "Contact Us", id: "contact" },
+        ].map(({ label, id }, index) => (
+          <li
+            key={index}
+            onClick={(e) => {
+              e.preventDefault(); // Prevent default behavior
+              handleNavClick(id);
+            }}
+          >
+            {label}
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 };

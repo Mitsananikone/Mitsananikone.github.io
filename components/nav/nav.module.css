@@ -1,3 +1,4 @@
+/* Base Navbar Styles */
 .navbar {
   position: fixed;
   top: 0;
@@ -13,102 +14,137 @@
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.navbar.show {
-  transform: translateY(0);
-  opacity: 1;
-}
+.navbar.show { transform: translateY(0); opacity: 1; }
+.navbar.hide { transform: translateY(-100%); opacity: 0; }
 
-.navbar.hide {
-  transform: translateY(-100%);
-  opacity: 0;
+/* Logo Styles */
+.logo {
+  flex-shrink: 0;
 }
 
 .logo img {
   height: 48px;
   cursor: pointer;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+/* Hamburger Menu - Hidden by default on desktop */
 .hamburger {
-  display: none; /* Hidden on larger screens */
+  display: none;
   flex-direction: column;
   justify-content: space-around;
   height: 24px;
   cursor: pointer;
+  z-index: 1001;
 }
 
 .hamburger .line {
   width: 30px;
   height: 3px;
   background-color: var(--foreground-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
+/* Hamburger Animation */
+.hamburger[aria-expanded="true"] .line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger[aria-expanded="true"] .line:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] .line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Navigation Links - Desktop */
 .navLinks {
-  display: flex; /* Default for larger screens */
+  display: flex;
   list-style: none;
-  gap: 2rem;
-  font-size: 1.2rem;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  gap: 1rem;
+  font-size: 0.8rem;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 .navLinks li {
   cursor: pointer;
-  font-family: "Bebas Neue Pro Bold", sans-serif;
-  color: var(--foreground-color);
-  transition: color 0.2s;
-}
-
-.navLinks li:hover {
+  font-family: 'Coco Pro Bold', 'Bebas Neue Pro Bold', Arial, sans-serif;
   color: var(--primary-color);
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  white-space: nowrap;
 }
 
+.navLinks li::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navLinks li:hover::after { transform: scaleX(1); transform-origin: left; }
+.navLinks li:hover { color: var(--primary-color); transform: translateY(-2px); }
+
+/* Mobile Styles (768px and below) */
 @media (max-width: 768px) {
   .hamburger {
-    display: flex; /* Show hamburger icon */
+    display: flex; /* Show hamburger menu */
   }
 
   .navLinks {
-    display: none; /* Hide links by default */
+    display: none; 
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     flex-direction: column;
-    background-color: var(--primary-color);
-    padding: 1rem;
-    border-top: 1px solid var(--foreground-color);
-    gap: 1rem; /* Add spacing for mobile */
-  }
+    background-color: var(--secondary-color);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 0;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
 
-  .navLinks li:hover {
-    color: var(--secondary-color);
+   
   }
 
   .navLinks.open {
-    display: flex; /* Show links when the hamburger is clicked */
+    display: flex; /* Show when menu is open */
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    
+  }
+
+  .navLinks li {
+    padding: 0.5rem;
+    text-align: center;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    
+  }
+
+  .navLinks li:last-child {
+    border-bottom: none;
   }
 }
 
-/* === Responsive Utilities === */
-/* @media (max-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-}
-
-@media (min-width: 480px) and (max-width: 768px) {
+/* Tablet Landscape / Small Desktop (769px to 1024px) */
+@media (max-width: 1024px) {
   .navLinks {
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    gap: 0.8rem;
+    font-size: 0.55rem;
   }
 }
 
-@media (min-width: var(--breakpoint-tablet)) and (max-width: var(--breakpoint-desktop)) {
-  body {
-    font-size: 18px;
+/* Extra Large Screens (1500px and above) */
+@media (min-width: 1500px) {
+  .navLinks {
+    gap: 1.6rem;
+    font-size: 1.2rem;
   }
 }
-
-@media (min-width: var(--breakpoint-desktop)) {
-  body {
-    font-size: 20px;
-  }
-} */
